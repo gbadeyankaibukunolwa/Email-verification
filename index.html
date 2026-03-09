@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Token | Ilios Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #2563eb;
+            --primary-purple: #5b21b6;
+            --secondary-purple: #7e3af2;
+            --accent-gold: #d97706;
+            --light-bg: #f8fafc;
+            --dark-text: #0f172a;
+            --medium-text: #475569;
+            --light-text: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --border-radius: 20px;
+            --box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.25);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--dark-text);
+            line-height: 1.6;
+            padding: 30px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(91, 33, 182, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(37, 99, 235, 0.15) 0%, transparent 20%);
+            z-index: -1;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 700px;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .app::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple), var(--accent-gold));
+            z-index: 10;
+        }
+
+        .app:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Header Section */
+        .token-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            text-align: center;
+            padding: 50px 30px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .token-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            animation: rotate 15s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .brand-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .token-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 800;
+            margin: 15px 0 12px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #ffffff, #f1f5f9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .token-subtitle {
+            font-size: 18px;
+            opacity: 0.95;
+            max-width: 85%;
+            margin: 0 auto;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        /* Content Section */
+        .wrapper {
+            padding: 50px 40px;
+            text-align: center;
+            background: var(--light-bg);
+            position: relative;
+        }
+
+        .wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,1) 100%);
+            z-index: 0;
+        }
+
+        .token-instructions {
+            font-size: 20px;
+            margin-bottom: 35px;
+            color: var(--dark-text);
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .token-container {
+            background: white;
+            border: 3px solid var(--secondary-blue);
+            border-radius: 20px;
+            padding: 40px 30px;
+            margin: 35px 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            z-index: 1;
+        }
+
+        .token-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple), var(--accent-gold));
+        }
+
+        .token-container::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(37, 99, 235, 0.05), transparent);
+            transform: rotate(45deg);
+            animation: slide 3s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+
+        .token-label {
+            font-size: 14px;
+            color: var(--medium-text);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            font-weight: 600;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        .token-code {
+            font-family: 'Courier New', monospace;
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            margin: 10px 0;
+            word-spacing: 10px;
+            background: linear-gradient(to right, var(--primary-blue), var(--primary-purple), var(--accent-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 1;
+            padding: 10px 0;
+        }
+
+        .copy-container {
+            margin-top: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .token-expiry {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+            color: #92400e;
+            border-left: 5px solid var(--warning);
+            padding: 20px 25px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 30px;
+            font-weight: 600;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1);
+        }
+
+        .security-note {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 95, 70, 0.1));
+            color: #065f46;
+            border-left: 5px solid var(--success);
+            padding: 20px 25px;
+            border-radius: 0 12px 12px 0;
+            margin: 30px 0;
+            font-weight: 600;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Footer Section */
+        .footer {
+            text-align: center;
+            padding: 40px 30px;
+            background: white;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.2), transparent);
+        }
+
+        .footer-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--dark-text);
+            letter-spacing: -0.5px;
+        }
+
+        .footer-subtitle {
+            color: var(--medium-text);
+            margin-bottom: 30px;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+            line-height: 1.7;
+        }
+
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .social-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 18px 12px;
+            border-radius: 16px;
+            background: rgba(248, 250, 252, 0.8);
+            border: 2px solid rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(126, 58, 242, 0.1));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .social-link:hover::before {
+            opacity: 1;
+        }
+
+        .social-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .facebook .social-icon { background: #1877f2; color: white; }
+        .twitter .social-icon { background: #1da1f2; color: white; }
+        .instagram .social-icon { background: #e1306c; color: white; }
+        .tiktok .social-icon { background: #69c9d0; color: white; }
+        .website .social-icon { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; }
+
+        .social-link span {
+            font-size: 14px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .copyright {
+            margin-top: 35px;
+            color: var(--light-text);
+            font-size: 13px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            font-weight: 400;
+        }
+
+        /* Badge/Stamp Effect */
+        .verified-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .token-title {
+                font-size: 34px;
+            }
+            
+            .token-code {
+                font-size: 28px;
+                letter-spacing: 3px;
+                word-spacing: 6px;
+            }
+            
+            .wrapper, .footer {
+                padding: 35px 25px;
+            }
+            
+            .token-container {
+                padding: 30px 20px;
+            }
+            
+            .social-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .token-title {
+                font-size: 28px;
+            }
+            
+            .token-code {
+                font-size: 24px;
+                letter-spacing: 2px;
+                word-spacing: 4px;
+            }
+            
+            .wrapper, .footer {
+                padding: 30px 20px;
+            }
+            
+            .token-container {
+                padding: 25px 15px;
+            }
+            
+            .social-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-link {
+                padding: 20px;
+            }
+        }
+
+        /* Animation for token code */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; filter: brightness(1); }
+            50% { opacity: 0.9; filter: brightness(1.2); }
+        }
+
+        .token-code {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        /* Copy button styles */
+        .copy-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .copy-btn:hover::before {
+            left: 100%;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(37, 99, 235, 0.55);
+            background: linear-gradient(135deg, var(--secondary-blue), #1e40af);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, var(--success), #0da27e);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Loading animation for page entrance */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .app {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .token-header, .wrapper, .footer {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .token-header { animation-delay: 0.1s; }
+        .wrapper { animation-delay: 0.2s; }
+        .footer { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="verified-badge">
+            <i class="fas fa-check-circle"></i> SECURE
+        </div>
+
+        <div class="token-header">
+            <div class="brand-logo">
+                <div class="brand-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="brand-name">Ilios Digital</div>
+            </div>
+            <h1 class="token-title">Verification Token</h1>
+            <p class="token-subtitle">Your secure access code for account verification</p>
+        </div>
+
+        <div class="wrapper">
+            <p class="token-instructions">Your unique verification token is ready</p>
+            
+            <div class="token-container">
+                <div class="token-label">Access Token</div>
+                <div class="token-code" id="tokenCode">VFT-V001-203L-2026-ATFV</div>
+                <div class="copy-container">
+                    <button class="copy-btn" id="copyBtn">
+                        <i class="fas fa-copy"></i> Copy Token
+                    </button>
+                </div>
+            </div>
+            
+            <div class="token-expiry">
+                <i class="fas fa-hourglass-half"></i> <strong>Important:</strong> This token will expire in <strong>24 hours</strong>. Please use it promptly to complete your verification.
+            </div>
+            
+            <div class="security-note">
+                <i class="fas fa-shield-alt"></i> <strong>Security Notice:</strong> Never share this token with anyone. Ilios Digital will never request your token via phone, email, or any other communication channel.
+            </div>
+        </div>
+        
+        <div class="footer">
+            <h3 class="footer-title">Stay Connected</h3>
+            <p class="footer-subtitle">Follow our official channels for the latest updates, announcements, and exclusive content</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/share/1C3HDRahNs/" class="social-link facebook" target="_blank">
+                    <div class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <span>Facebook</span>
+                </a>
+                <a href="https://x.com/IliosAfrica" class="social-link twitter" target="_blank">
+                    <div class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <span>Twitter</span>
+                </a>
+                <a href="https://www.instagram.com/ilios_healthafrica?igsh=a2F2MDJpeDA4OXMy" class="social-link instagram" target="_blank">
+                    <div class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://www.tiktok.com/@ilioshealth?_r=1&_t=ZS-935gN3jQ3m6" class="social-link tiktok" target="_blank">
+                    <div class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <span>TikTok</span>
+                </a>
+                <a href="https://iliosdigital.co" class="social-link website" target="_blank">
+                    <div class="social-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <span>Website</span>
+                </a>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Ilios Digital. All rights reserved. | Secure • Trusted • Verified
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyBtn = document.getElementById('copyBtn');
+            const tokenCode = document.getElementById('tokenCode');
+            
+            copyBtn.addEventListener('click', function() {
+                const tokenText = tokenCode.textContent;
+                
+                // Create temporary textarea for copying
+                const textarea = document.createElement('textarea');
+                textarea.value = tokenText;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    
+                    // Visual feedback
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    copyBtn.classList.add('copied');
+                    
+                    // Show success message
+                    showNotification('Token copied to clipboard!', 'success');
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                        copyBtn.classList.remove('copied');
+                    }, 2500);
+                } catch (err) {
+                    console.error('Failed to copy token: ', err);
+                    showNotification('Failed to copy. Please try manually.', 'error');
+                } finally {
+                    document.body.removeChild(textarea);
+                }
+            });
+            
+            // Notification function
+            function showNotification(message, type) {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.style.position = 'fixed';
+                notification.style.top = '20px';
+                notification.style.right = '20px';
+                notification.style.padding = '15px 25px';
+                notification.style.borderRadius = '12px';
+                notification.style.color = 'white';
+                notification.style.fontWeight = '600';
+                notification.style.boxShadow = '0 8px 25px rgba(0,0,0,0.2)';
+                notification.style.zIndex = '10000';
+                notification.style.transform = 'translateX(400px)';
+                notification.style.transition = 'transform 0.3s ease';
+                notification.textContent = message;
+                
+                if (type === 'success') {
+                    notification.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                } else {
+                    notification.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+                }
+                
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 10);
+                
+                // Auto remove after 3 seconds
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(400px)';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+            
+            // Add hover effect to token code for better visibility
+            tokenCode.addEventListener('mouseenter', function() {
+                this.style.cursor = 'pointer';
+                this.style.filter = 'brightness(1.3)';
+            });
+            
+            tokenCode.addEventListener('mouseleave', function() {
+                this.style.filter = 'brightness(1)';
+            });
+            
+            // Click to copy from token itself
+            tokenCode.addEventListener('click', function() {
+                copyBtn.click();
+            });
+        });
+    </script>
+</body>
+</html>
